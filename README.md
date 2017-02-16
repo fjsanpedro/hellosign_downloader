@@ -19,7 +19,7 @@ fill the variables *HELLO_SIGN_API_KEY* and *HELLO_SIGN_CLIENT_ID* with your cre
 
 How it works
 ------------
-This project is created to perform a really short subset of actions, and the main one is
+This project is created to perform a really short subset of actions which the main one is
 to download documents. The available commands are:
 * Download document(s) using their document id
 ```bash
