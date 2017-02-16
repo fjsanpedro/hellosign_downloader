@@ -27,8 +27,6 @@ class HelloSignDownloader
       Reporter.new(query!(query)).run
     end
 
-
-
     private
 
     def query!(query)
