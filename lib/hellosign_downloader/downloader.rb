@@ -4,8 +4,10 @@ class HelloSignDownloader
     DEFAULT_DOC_FORMAT = 'pdf'
     AVAILABLE_DOC_FORMATS = ['zip', 'pdf']
 
-    def initialize(format: DEFAULT_DOC_FORMAT, output_dir: nil)
+    def initialize(format: DEFAULT_DOC_FORMAT, output_dir: nil, page: 1, limit: 20)
       @format = format&.downcase
+      @page = page
+      @limit = limit
       @output_dir = output_dir || Dir.pwd
     end
 
@@ -40,7 +42,9 @@ class HelloSignDownloader
     private
 
     def query!(query)
-      hello_sign_client.get_signature_requests(query: query.compact.join(' '))
+      hello_sign_client.get_signature_requests query: query.compact.join(' '), 
+                                               page_size: @limit, 
+                                               page: @page
     end
 
     def download!(document_id)
