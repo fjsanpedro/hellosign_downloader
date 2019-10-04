@@ -36,6 +36,12 @@ documents. To get a more extensive list of query options you can visit
 ```bash
 $ bin/hs query complete:true
 ```
+
+* Then you may want to get some information about the document by its ID:
+```bash
+$ bin/hs info document_id
+```
+
 * Lastly you are also able to download documents using a query string:
 ```bash
 $ bin/hs download_from_query complete:true
