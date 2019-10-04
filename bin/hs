@@ -53,3 +53,13 @@ command :query do |c|
     HelloSignDownloader::Downloader.new.query_documents(args)
   end
 end
+
+command :info do |c|
+  c.syntax = 'hs info Document ID [options]'
+  c.summary = 'Shows document info. More info about available query options at: https://app.hellosign.com/api/reference#Search'
+  c.description = c.summary
+  c.example 'Show info of document with ID ce4cd007ce4d9c9bfaa22e12d123d12aa7b23456"', 'hs info ce4cd007ce4d9c9bfaa22e12d123d12aa7b23456'
+  c.action do |args, options|
+    HelloSignDownloader::Downloader.new.document_info(args)
+  end
+end
