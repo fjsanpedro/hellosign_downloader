@@ -12,14 +12,7 @@ class HelloSignDownloader
     def document_download(document_ids)
       Array(document_ids).each do |signature|
         begin
-          file_info = get_info(signature)
-          file_date = nil
-          file_info.signatures.each do |signature|
-            file_date = signature.signed_at || signature.last_viewed_at || signature.last_reminded_at || file_date
-          end
-          file_name = "#{Time.at(file_date).strftime('%Y-%m-%d %H:%M:%S')} #{file_info.title}"
-          
-          save_file file_name, download!(signature)
+          save_file prepare_filename(signature), download!(signature)
         rescue HelloSign::Error::NotFound
           puts "Signature #{signature} not found"
         end
@@ -85,6 +78,19 @@ class HelloSignDownloader
       open(file_path, 'wb') do |file|
         file.write(content)
       end
+    end
+
+    def prepare_filename(signature_request_id)
+      file_info = get_info(signature_request_id)
+      file_date = nil
+      file_info.signatures.each do |signature|
+        file_date = signature.signed_at || signature.last_viewed_at || signature.last_reminded_at || file_date
+      end
+      title = file_info.title
+      title.gsub!(/^.*(\\|\/)/, '')
+      title.gsub!(/[^0-9A-Za-z\.\-]/, '_')
+
+      filename = "#{Time.at(file_date).strftime('%Y-%m-%d %H:%M:%S')} #{title}"
     end
 
     def destination_path(signature)
