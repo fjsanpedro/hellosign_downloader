@@ -37,9 +37,13 @@ command :download_from_query do |c|
   c.example 'Download completed documents"', 'hs download_from_query complete:true'
   c.option '-f', '--format FORMAT', String, 'Specify the download format (PDF or ZIP). Default: PDF'
   c.option '-o', '--output OUTPUT_PATH', String, 'Specify path to download the documents. Default: Current Path'
+  c.option '-l', '--limit INTEGER', Integer, 'Limit the number of documents on page. Default: 20. Max: 100'
+  c.option '-p', '--page INTEGER', Integer, 'Select the page. Default: 1'
   c.action do |args, options|
     HelloSignDownloader::Downloader.new(format: options.format,
-                                        output_dir: options.output)
+                                        output_dir: options.output,
+                                        page: options.page,
+                                        limit: options.limit)
                                    .query_download(args)
   end
 end
@@ -49,7 +53,21 @@ command :query do |c|
   c.summary = 'List saved documents using a query string. More info about available query options at: https://app.hellosign.com/api/reference#Search'
   c.description = c.summary
   c.example 'List document(s) completed"', 'hs query complete:true'
+  c.option '-l', '--limit INTEGER', Integer, 'Limit the number of documents on page. Default: 20. Max: 100'
+  c.option '-p', '--page INTEGER', Integer, 'Select the page. Default: 1'
   c.action do |args, options|
-    HelloSignDownloader::Downloader.new.query_documents(args)
+    HelloSignDownloader::Downloader.new(page: options.page,
+                                        limit: options.limit)
+                                    .query_documents(args)
+  end
+end
+
+command :info do |c|
+  c.syntax = 'hs info Document ID [options]'
+  c.summary = 'Shows document info. More info about available query options at: https://app.hellosign.com/api/reference#Search'
+  c.description = c.summary
+  c.example 'Show info of document with ID ce4cd007ce4d9c9bfaa22e12d123d12aa7b23456"', 'hs info ce4cd007ce4d9c9bfaa22e12d123d12aa7b23456'
+  c.action do |args, options|
+    HelloSignDownloader::Downloader.new.document_info(args)
   end
 end
